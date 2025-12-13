@@ -1,0 +1,41 @@
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import Users from './Users.model';
+import Roles from './Roles.model';
+
+export interface UserRolesI extends Model {
+    ur_user_id: string;
+    ur_role_id: string;
+}
+
+@Table({
+    tableName: 'user_roles',
+    timestamps: true,
+    createdAt: 'ur_createdAt',
+    updatedAt: 'ur_updatedAt'
+})
+class UserRoles extends Model<UserRolesI> {
+
+    @ForeignKey(() => Users)
+    @Column({
+        type: DataType.UUID,
+        primaryKey: true,
+        allowNull: false
+    })
+    declare ur_user_id: string;
+
+    @BelongsTo(() => Users)
+    declare user: Users;
+
+    @ForeignKey(() => Roles)
+    @Column({
+        type: DataType.UUID,
+        primaryKey: true,
+        allowNull: false
+    })
+    declare ur_role_id: string;
+
+    @BelongsTo(() => Roles)
+    declare role: Roles;
+}
+
+export default UserRoles;
