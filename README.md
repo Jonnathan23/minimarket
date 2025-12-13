@@ -2,9 +2,7 @@
 
 API REST para el sistema de minimarket.
 
-## Requisitos Previos
-
-### Instalación de Bun
+### Instalación de Bun (Opcional)
 
 [Bun](https://bun.sh) es un runtime de JavaScript rápido y todo-en-uno.
 
@@ -29,22 +27,42 @@ bun install
 
 ## Scripts Disponibles
 
+### Pnpm
 | Comando | Descripción |
 |---------|-------------|
-| `bun run dev` | Inicia el servidor en modo desarrollo con hot-reload |
-| `bun run build` | Compila el proyecto TypeScript |
-| `bun run test` | Ejecuta los tests con Jest |
-| `bun run test:coverage` | Ejecuta los tests con reporte de cobertura |
+| `pnpm run dev` | Inicia el servidor en modo desarrollo con hot-reload |
+| `pnpm run build` | Compila el proyecto TypeScript |
+| `pnpm run test` | Ejecuta los tests con Jest |
+| `pnpm run test:coverage` | Ejecuta los tests con reporte de cobertura |
+
+### Bun
+| Comando | Descripción |
+|---------|-------------|
+| `bun dev` | Inicia el servidor en modo desarrollo con hot-reload |
+| `bun build` | Compila el proyecto TypeScript |
+| `bun test` | Ejecuta los tests con Jest |
+| `bun test:coverage` | Ejecuta los tests con reporte de cobertura |
 
 ## Desarrollo
 
-Para iniciar el servidor en modo desarrollo:
+Para ejecutar el servidor en modo desarrollo:
 
+### Pnpm
 ```bash
-bun run dev
+pnpm run dev:api
+```
+
+### Bun
+```bash
+bun dev:api
 ```
 
 El servidor estará disponible en `http://localhost:4000` (o el puerto definido en las variables de entorno).
+
+> **Nota:**
+> Si no se especifica el :api los scripts de bun y pnpm solo iniciaran el servidor y no permitiran peticiones a la API desde cualquier herramienta como Postman o Insomnia.
+
+
 
 ## Variables de Entorno
 

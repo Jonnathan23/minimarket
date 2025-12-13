@@ -14,7 +14,7 @@ export class DatabaseConnection {
         const { ulrDatabase, logging = false } = options        
 
         const db = new Sequelize(ulrDatabase, {
-            models: [__dirname + './models/**/*'],
+            models: [__dirname + '/models/**/*.model.{ts,js}'],
             logging: logging
         })
 

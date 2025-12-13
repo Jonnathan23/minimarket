@@ -1,4 +1,3 @@
-import colors from 'colors'
 import cors from 'cors'
 import express from "express";
 import morgan from 'morgan';
@@ -9,7 +8,7 @@ import router from './router';
 
 const db = new DatabaseConnection({
     ulrDatabase: envs.DATABASE_URL,
-    logging: true//envs.NODE_ENV === 'development'
+    logging: false//envs.NODE_ENV === 'development'
 })
 
 db.connect()

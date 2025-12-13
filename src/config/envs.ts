@@ -2,6 +2,7 @@ import { get } from "env-var"
 
 process.loadEnvFile()
 
+
 export const envs = {
     PORT: get('PORT').required().asPortNumber(),
     DATABASE_URL: get('DATABASE_URL').required().asString(),
