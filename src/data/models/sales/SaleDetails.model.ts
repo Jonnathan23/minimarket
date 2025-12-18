@@ -2,8 +2,8 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize
 import Sales from './Sales.model';
 import Products from '../clients/Products.model';
 
-export interface SaleDetailsI extends Model {
-    sd_id: string;
+export interface SaleDetailsI {
+    sd_id?: string;
     sd_sale_id: string;
     sd_product_id: string;
     sd_cantidad: number;

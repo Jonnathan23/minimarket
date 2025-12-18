@@ -1,8 +1,8 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import Products from '../clients/Products.model';
 
-export interface InventoryMovementsI extends Model {
-    im_id: string;
+export interface InventoryMovementsI {
+    im_id?: string;
     im_product_id: string;
     im_tipo: string;
     im_cantidad: number;

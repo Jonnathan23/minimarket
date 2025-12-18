@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import Purchases from './Purchases.model';
 
-export interface ProvidersI extends Model {
+export interface ProvidersI {
     po_id: string;
     po_nombre: string;
     po_RUC_NIT: string;
