@@ -2,8 +2,8 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize
 import { Users } from '../security';
 
 
-export interface CashMovementsI extends Model {
-    cm_id: string;
+export interface CashMovementsI {
+    cm_id?: string;
     cm_user_id: string;
     cm_fecha: Date;
     cm_tipo: string;

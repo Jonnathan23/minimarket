@@ -3,8 +3,8 @@ import Providers from './Providers.model';
 import PurchaseDetails from './PurchaseDetails.model';
 
 
-export interface PurchasesI extends Model {
-    pu_id: string;
+export interface PurchasesI {
+    pu_id?: string;
     pu_provider_id: string;
     pu_fecha: Date;
     pu_total: number;

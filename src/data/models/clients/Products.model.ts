@@ -5,12 +5,13 @@ import PurchaseDetails from '../providers/PurchaseDetails.model';
 import SaleDetails from '../sales/SaleDetails.model';
 
 
-export interface ProductsI extends Model {
-    pr_id: string;
+export interface ProductsI {
+    pr_id?: string;
     pr_name: string;
     pr_price: number;
     pr_availability: boolean;
     pr_category_id: string;
+    pr_stock?: number;
 }
 
 @Table({
@@ -46,6 +47,13 @@ class Products extends Model<ProductsI> {
         allowNull: false
     })
     declare pr_availability: boolean;
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    })
+    declare pr_stock: number;
 
     @ForeignKey(() => Categories)
     @Column({
