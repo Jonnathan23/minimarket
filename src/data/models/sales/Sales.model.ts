@@ -5,8 +5,8 @@ import SaleDetails from './SaleDetails.model';
 import { Users } from '../security';
 
 
-export interface SalesI extends Model {
-    sa_id: string;
+export interface SalesI {
+    sa_id?: string;
     sa_client_id: string | null;
     sa_user_id: string;
     sa_fecha: Date;
