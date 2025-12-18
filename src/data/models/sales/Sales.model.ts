@@ -1,7 +1,8 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import Clients from '../clients/Clients.model';
-import Users from '../security/Users.model';
+
 import SaleDetails from './SaleDetails.model';
+import { Users } from '../security';
 
 
 export interface SalesI extends Model {

@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import Users from '../security/Users.model';
+import { Users } from '../security';
+
 
 export interface CashMovementsI extends Model {
     cm_id: string;

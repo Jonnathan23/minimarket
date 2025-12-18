@@ -21,7 +21,7 @@ export interface UsersI extends Model {
     createdAt: 'us_createdAt',
     updatedAt: 'us_updatedAt'
 })
-class Users extends Model<UsersI> {
+export class Users extends Model {
 
     //* |------| | PK | |------|
     @Column({
@@ -76,6 +76,5 @@ class Users extends Model<UsersI> {
     @HasMany(() => CashMovements)
     declare cash_movements: CashMovements[];
 }
-
 
 export default Users;

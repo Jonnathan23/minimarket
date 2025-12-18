@@ -13,7 +13,7 @@ export interface RolesI extends Model {
     createdAt: 'ro_createdAt',
     updatedAt: 'ro_updatedAt'
 })
-class Roles extends Model<RolesI> {
+class Roles extends Model{
 
     @Column({
         type: DataType.UUID,

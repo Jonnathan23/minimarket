@@ -12,7 +12,7 @@ export interface ParametersI extends Model {
     createdAt: 'pa_createdAt',
     updatedAt: 'pa_updatedAt'
 })
-class Parameters extends Model<ParametersI> {
+class Parameters extends Model {
 
     @Column({
         type: DataType.UUID,

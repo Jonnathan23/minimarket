@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import Users from './Users.model';
+
 import Roles from './Roles.model';
+import { Users } from '.';
 
 export interface UserRolesI extends Model {
     ur_user_id: string;
@@ -13,7 +14,7 @@ export interface UserRolesI extends Model {
     createdAt: 'ur_createdAt',
     updatedAt: 'ur_updatedAt'
 })
-class UserRoles extends Model<UserRolesI> {
+class UserRoles extends Model {
 
     @ForeignKey(() => Users)
     @Column({
