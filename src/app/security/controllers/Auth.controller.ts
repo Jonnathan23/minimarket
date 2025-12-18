@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Users } from "../../../data/models/security";
-import { BcryptAdapter } from "../../../utils";
+import { BcryptAdapter, JwtAdapter } from "../../../utils";
 
 export class AuthController {
 
@@ -31,7 +31,9 @@ export class AuthController {
                 return res.status(401).json({ errors: 'Invalid credentials' })
             }
 
-            res.status(200).json(userFound)
+            const token = JwtAdapter.generateToken(userFound.us_id);
+
+            res.status(200).json({token: token})
         } catch (error) {
             res.status(500).json({ errors: error })
         }

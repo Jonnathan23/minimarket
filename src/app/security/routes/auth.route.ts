@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { AuthController } from ".";
-import { findUserExists, validateUserExists } from "./middleware/findUserExists.mid";
-import { handleInputErrors } from "../../middleware/handleErrors.mid";
+import { AuthController } from "..";
+import { findUserExists, validateUserExists } from "../middleware/findUserExists.mid";
+import { handleInputErrors } from "../../../middleware/handleErrors.mid";
 import { body } from "express-validator";
 
 
