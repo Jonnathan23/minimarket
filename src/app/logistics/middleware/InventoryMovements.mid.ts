@@ -8,3 +8,16 @@ declare global {
         }
     }
 }
+
+export const inventoryMovementExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
+    try {
+        const movement = await InventoryMovements.findByPk(id);
+        if (!movement) {
+            return res.status(404).json({ error: 'Inventory Movement not found' });
+        }
+        req.inventoryMovement = movement;
+        next();
+    } catch (error) {
+        res.status(500).json({ errors: error });
+    }
+};
