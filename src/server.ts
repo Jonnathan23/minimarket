@@ -5,10 +5,13 @@ import { envs, CorsConfig } from './config';
 import { DatabaseConnection } from './data';
 import router from './router';
 
+const urlDatabase = envs.NODE_ENV === 'testing'
+    ? (envs.DATABASE_TEST_URL || envs.DATABASE_URL)
+    : envs.DATABASE_URL;
 
 const db = new DatabaseConnection({
-    ulrDatabase: envs.DATABASE_URL,
-    logging: false//envs.NODE_ENV === 'development'
+    ulrDatabase: urlDatabase,
+    logging: false
 })
 
 db.connect()
