@@ -47,4 +47,5 @@ router.use('/purchases', routerPurchases);
 router.use('/sales', routerSales);
 
 
+
 export default router;
