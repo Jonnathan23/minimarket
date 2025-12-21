@@ -12,7 +12,7 @@ router.param('parameterId', parameterExists);
 router.use(authenticate);
 
 // POST /parameter - Create parameter
-router.post('/',
+router.post('/parameters',
     [
         body('pa_clave').notEmpty().withMessage('Key is required'),
         body('pa_valor').notEmpty().withMessage('Value is required'),
@@ -21,11 +21,11 @@ router.post('/',
     ParametersController.create
 );
 
-router.get('/', ParametersController.getAll);
+router.get('/parameters', ParametersController.getAll);
 
-router.get('/:parameterId', ParametersController.getById);
+router.get('/parameters/:parameterId', ParametersController.getById);
 
-router.put('/:parameterId',
+router.put('/parameters/:parameterId',
     [
         body('pa_clave').optional().notEmpty(),
         body('pa_valor').optional().notEmpty(),
@@ -34,6 +34,6 @@ router.put('/:parameterId',
     ParametersController.update
 );
 
-router.delete('/:parameterId', ParametersController.delete);
+router.delete('/parameters/:parameterId', ParametersController.delete);
 
 export default router;
