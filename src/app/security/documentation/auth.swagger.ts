@@ -3,7 +3,7 @@
  * /api/auth/register:
  *   post:
  *     summary: Registrar un nuevo usuario
- *     tags: [Auth]
+ *     tags: [Autenticación]
  *     requestBody:
  *       required: true
  *       content:
@@ -35,7 +35,7 @@
  * /api/auth/login:
  *   post:
  *     summary: Iniciar sesión de usuario
- *     tags: [Auth]
+ *     tags: [Autenticación]
  *     requestBody:
  *       required: true
  *       content:

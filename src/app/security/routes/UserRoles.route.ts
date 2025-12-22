@@ -12,12 +12,12 @@ router.param('roleId', validateRoleExists);
 router.use(authenticate);
 
 // POST /assign/:userId/:roleId - Assign role to user
-router.post('user-roles/assign/:userId/:roleId', UserRolesController.assignRole);
+router.post('/assign/:userId/:roleId', UserRolesController.assignRole);
 
 // DELETE /remove/:userId/:roleId - Remove role from user
-router.delete('user-roles/remove/:userId/:roleId', UserRolesController.removeRole);
+router.delete('/remove/:userId/:roleId', UserRolesController.removeRole);
 
 // GET /list/:userId - List roles by user
-router.get('user-roles/list/:userId', UserRolesController.listByUser);
+router.get('/list/:userId', UserRolesController.listByUser);
 
 export default router;

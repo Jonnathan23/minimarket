@@ -12,7 +12,7 @@ router.param('categoryId', categoryExists);
 router.use(authenticate);
 
 // POST /category - Create category
-router.post('/category',
+router.post('/',
     [
         body('ca_name').notEmpty().withMessage('Name is required'),
         body('ca_descripcion').notEmpty().withMessage('Description is required'),

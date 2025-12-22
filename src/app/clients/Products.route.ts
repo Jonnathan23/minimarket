@@ -14,7 +14,7 @@ router.param('categoryId', categoryExists);
 router.use(authenticate);
 
 // POST /product/:categoryId - Create product for this category
-router.post('/product/:categoryId',
+router.post('/category/:categoryId',
     [
         body('pr_name').notEmpty().withMessage('Name is required'),
         // RF-03: Validate price > 0
