@@ -10,7 +10,7 @@ export class ProductsController {
                 limit: 3,
                 order: [['pr_id', 'DESC']]
             });
-            res.json(products);
+            res.status(200).json(products);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -37,7 +37,7 @@ export class ProductsController {
         try {
             const product = req.product!;
             await product.update(req.body);
-            res.json(product);
+            res.status(200).json(product);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -47,7 +47,7 @@ export class ProductsController {
         try {
             const product = req.product!;
             await product.destroy();
-            res.json({ message: 'Product deleted' });
+            res.status(200).json({ message: 'Product deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -55,7 +55,7 @@ export class ProductsController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.product);
+            res.status(200).json(req.product);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

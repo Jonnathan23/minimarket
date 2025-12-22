@@ -9,7 +9,7 @@ export class SalesController {
     static async getAll(req: Request, res: Response) {
         try {
             const sales = await Sales.findAll({ include: ['sale_details'] });
-            res.json(sales);
+            res.status(200).json(sales);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -72,7 +72,7 @@ export class SalesController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.sale);
+            res.status(200).json(req.sale);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

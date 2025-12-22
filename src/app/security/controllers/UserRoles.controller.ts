@@ -33,7 +33,7 @@ export class UserRolesController {
                 return res.status(404).json({ error: 'Assignment not found' });
             }
 
-            res.json({ message: 'Role removed from user' });
+            res.status(200).json({ message: 'Role removed from user' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -43,7 +43,7 @@ export class UserRolesController {
         try {
             const { userId } = req.params;
             const roles = await UserRoles.findAll({ where: { ur_user_id: userId }, include: ['role'] });
-            res.json(roles);
+            res.status(200).json(roles);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

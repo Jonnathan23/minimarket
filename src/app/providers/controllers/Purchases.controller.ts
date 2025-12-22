@@ -7,7 +7,7 @@ export class PurchasesController {
     static async getAll(req: Request, res: Response) {
         try {
             const purchases = await Purchases.findAll({ include: ['purchase_details'] });
-            res.json(purchases);
+            res.status(200).json(purchases);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -41,7 +41,7 @@ export class PurchasesController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.purchase);
+            res.status(200).json(req.purchase);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

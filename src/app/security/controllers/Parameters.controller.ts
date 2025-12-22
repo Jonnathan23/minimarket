@@ -6,7 +6,7 @@ export class ParametersController {
     static async getAll(req: Request, res: Response) {
         try {
             const parameters = await Parameters.findAll();
-            res.json(parameters);
+            res.status(200).json(parameters);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -25,7 +25,7 @@ export class ParametersController {
         try {
             const parameter = req.parameter!;
             await parameter.update(req.body);
-            res.json(parameter);
+            res.status(200).json(parameter);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -35,7 +35,7 @@ export class ParametersController {
         try {
             const parameter = req.parameter!;
             await parameter.destroy();
-            res.json({ message: 'Parameter deleted' });
+            res.status(200).json({ message: 'Parameter deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -43,7 +43,7 @@ export class ParametersController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.parameter);
+            res.status(200).json(req.parameter);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

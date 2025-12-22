@@ -6,7 +6,7 @@ export class ProvidersController {
     static async getAll(req: Request, res: Response) {
         try {
             const providers = await Providers.findAll();
-            res.json(providers);
+            res.status(200).json(providers);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -25,7 +25,7 @@ export class ProvidersController {
         try {
             const provider = req.provider!;
             await provider.update(req.body);
-            res.json(provider);
+            res.status(200).json(provider);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -35,7 +35,7 @@ export class ProvidersController {
         try {
             const provider = req.provider!;
             await provider.destroy();
-            res.json({ message: 'Provider deleted' });
+            res.status(200).json({ message: 'Provider deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -43,7 +43,7 @@ export class ProvidersController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.provider);
+            res.status(200).json(req.provider);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

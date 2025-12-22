@@ -6,7 +6,7 @@ export class RolesController {
     static async getAll(req: Request, res: Response) {
         try {
             const roles = await Roles.findAll();
-            res.json(roles);
+            res.status(200).json(roles);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -25,7 +25,7 @@ export class RolesController {
         try {
             const role = req.role!;
             await role.update(req.body);
-            res.json(role);
+            res.status(200).json(role);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -35,7 +35,7 @@ export class RolesController {
         try {
             const role = req.role!;
             await role.destroy();
-            res.json({ message: 'Role deleted' });
+            res.status(200).json({ message: 'Role deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -43,7 +43,7 @@ export class RolesController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.role);
+            res.status(200).json(req.role);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

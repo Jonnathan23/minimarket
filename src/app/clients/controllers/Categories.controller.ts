@@ -6,7 +6,7 @@ export class CategoriesController {
     static async getAll(req: Request, res: Response) {
         try {
             const categories = await Categories.findAll();
-            res.json(categories);
+            res.status(200).json(categories);
         } catch (error) {
             res.status(500).json({ errors: error });
             console.log(error)
@@ -26,7 +26,7 @@ export class CategoriesController {
         try {
             const category = req.category!;
             await category.update(req.body);
-            res.json(category);
+            res.status(200).json(category);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -36,7 +36,7 @@ export class CategoriesController {
         try {
             const category = req.category!;
             await category.destroy();
-            res.json({ message: 'Category deleted' });
+            res.status(200).json({ message: 'Category deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
         }
@@ -44,7 +44,7 @@ export class CategoriesController {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.category);
+            res.status(200).json(req.category);
         } catch (error) {
             res.status(500).json({ errors: error });
         }

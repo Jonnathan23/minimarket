@@ -3,16 +3,16 @@ import CashMovements from '../../../data/models/logistics/CashMovements.model';
 
 export class CashMovementsController {
 
-  static async getAll(req: Request, res: Response) {
+    static async getAll(req: Request, res: Response) {
         try {
             const movements = await CashMovements.findAll();
-            res.json(movements);
+            res.status(200).json(movements);
         } catch (error) {
             res.status(500).json({ errors: error });
         }
     }
 
-static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response) {
         try {
             const { cm_fecha, cm_tipo, cm_monto } = req.body;
             // Link to authenticated user (RF)
@@ -36,7 +36,7 @@ static async create(req: Request, res: Response) {
 
     static async getById(req: Request, res: Response) {
         try {
-            res.json(req.cashMovement);
+            res.status(200).json(req.cashMovement);
         } catch (error) {
             res.status(500).json({ errors: error });
             console.log(error)

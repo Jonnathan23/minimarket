@@ -7,7 +7,7 @@ export class InventoryMovementsController {
     static getAll = async (req: Request, res: Response) => {
         try {
             const movements = await InventoryMovements.findAll();
-            res.json(movements);
+            res.status(200).json(movements);
         } catch (error) {
             res.status(500).json({ errors: error })
         }
