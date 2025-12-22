@@ -14,6 +14,42 @@ export interface ProductsI {
     pr_stock?: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Products:
+ *       type: object
+ *       required:
+ *         - pr_id
+ *         - pr_name
+ *         - pr_price
+ *         - pr_availability
+ *         - pr_stock
+ *         - pr_category_id
+ *       properties:
+ *         pr_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del producto (Generado automáticamente)
+ *         pr_name:
+ *           type: string
+ *           description: Nombre del producto
+ *         pr_price:
+ *           type: number
+ *           format: float
+ *           description: Precio unitario del producto
+ *         pr_availability:
+ *           type: boolean
+ *           description: Disponibilidad del producto
+ *         pr_stock:
+ *           type: integer
+ *           description: Cantidad en stock (Por defecto 0)
+ *         pr_category_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID de la categoría asociada
+ */
 @Table({
     tableName: 'products',
     timestamps: true,

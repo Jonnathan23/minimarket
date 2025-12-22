@@ -8,6 +8,25 @@ export interface UserRolesI extends Model {
     ur_role_id: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserRoles:
+ *       type: object
+ *       required:
+ *         - ur_user_id
+ *         - ur_role_id
+ *       properties:
+ *         ur_user_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del usuario asociado (clave foránea)
+ *         ur_role_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del rol asociado (clave foránea)
+ */
 @Table({
     tableName: 'user_roles',
     timestamps: true,

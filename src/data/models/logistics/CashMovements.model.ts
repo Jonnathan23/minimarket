@@ -10,6 +10,39 @@ export interface CashMovementsI {
     cm_monto: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CashMovements:
+ *       type: object
+ *       required:
+ *         - cm_id
+ *         - cm_user_id
+ *         - cm_fecha
+ *         - cm_tipo
+ *         - cm_monto
+ *       properties:
+ *         cm_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del movimiento de caja (Generado automáticamente)
+ *         cm_user_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del usuario que registra el movimiento
+ *         cm_fecha:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora del movimiento
+ *         cm_tipo:
+ *           type: string
+ *           description: Tipo de movimiento (Ingreso/Egreso)
+ *         cm_monto:
+ *           type: number
+ *           format: float
+ *           description: Monto de la transacción
+ */
 @Table({
     tableName: 'cash_movements',
     timestamps: true,

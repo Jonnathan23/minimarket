@@ -7,13 +7,31 @@ export interface RolesI extends Model {
     ro_nombre_del_rol: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Roles:
+ *       type: object
+ *       required:
+ *         - ro_id
+ *         - ro_nombre_del_rol
+ *       properties:
+ *         ro_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del rol (Generado automáticamente)
+ *         ro_nombre_del_rol:
+ *           type: string
+ *           description: Nombre descriptivo del rol
+ */
 @Table({
     tableName: 'roles',
     timestamps: true,
     createdAt: 'ro_createdAt',
     updatedAt: 'ro_updatedAt'
 })
-class Roles extends Model{
+class Roles extends Model {
 
     @Column({
         type: DataType.UUID,

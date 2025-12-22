@@ -10,6 +10,35 @@ export interface PurchasesI {
     pu_total: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Purchases:
+ *       type: object
+ *       required:
+ *         - pu_id
+ *         - pu_provider_id
+ *         - pu_fecha
+ *         - pu_total
+ *       properties:
+ *         pu_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único de la compra (Generado automáticamente)
+ *         pu_provider_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del proveedor
+ *         pu_fecha:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora de la compra
+ *         pu_total:
+ *           type: number
+ *           format: float
+ *           description: Monto total de la compra
+ */
 @Table({
     tableName: 'purchases',
     timestamps: true,

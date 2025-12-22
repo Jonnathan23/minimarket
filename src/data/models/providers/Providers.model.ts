@@ -10,6 +10,41 @@ export interface ProvidersI {
     po_correo: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Providers:
+ *       type: object
+ *       required:
+ *         - po_id
+ *         - po_nombre
+ *         - po_RUC_NIT
+ *         - po_direccion
+ *         - po_telefono
+ *         - po_correo
+ *       properties:
+ *         po_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del proveedor (Generado automáticamente)
+ *         po_nombre:
+ *           type: string
+ *           description: Nombre de la empresa o proveedor
+ *         po_RUC_NIT:
+ *           type: string
+ *           description: Registro único de contribuyente o NIT
+ *         po_direccion:
+ *           type: string
+ *           description: Dirección física del proveedor
+ *         po_telefono:
+ *           type: string
+ *           description: Teléfono de contacto
+ *         po_correo:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico del proveedor
+ */
 @Table({
     tableName: 'providers',
     timestamps: true,

@@ -9,6 +9,37 @@ export interface InventoryMovementsI {
     im_referencia: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     InventoryMovements:
+ *       type: object
+ *       required:
+ *         - im_id
+ *         - im_product_id
+ *         - im_tipo
+ *         - im_cantidad
+ *         - im_referencia
+ *       properties:
+ *         im_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del movimiento (Generado automáticamente)
+ *         im_product_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del producto afectado
+ *         im_tipo:
+ *           type: string
+ *           description: Tipo de movimiento (Entrada/Salida)
+ *         im_cantidad:
+ *           type: integer
+ *           description: Cantidad de productos movidos
+ *         im_referencia:
+ *           type: string
+ *           description: Referencia o motivo del movimiento
+ */
 @Table({
     tableName: 'inventory_movements',
     timestamps: true,

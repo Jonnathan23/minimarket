@@ -14,6 +14,44 @@ export interface SalesI {
     sa_medio_de_pago: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Sales:
+ *       type: object
+ *       required:
+ *         - sa_id
+ *         - sa_user_id
+ *         - sa_fecha
+ *         - sa_total
+ *         - sa_medio_de_pago
+ *       properties:
+ *         sa_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único de la venta (Generado automáticamente)
+ *         sa_client_id:
+ *           type: string
+ *           format: uuid
+ *           nullable: true
+ *           description: ID del cliente (Opcional, puede ser consumidor final)
+ *         sa_user_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del usuario que registró la venta
+ *         sa_fecha:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora de la venta
+ *         sa_total:
+ *           type: number
+ *           format: float
+ *           description: Total de la venta
+ *         sa_medio_de_pago:
+ *           type: string
+ *           description: Medio de pago utilizado
+ */
 @Table({
     tableName: 'sales',
     timestamps: true,

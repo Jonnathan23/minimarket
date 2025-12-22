@@ -6,6 +6,28 @@ export interface ParametersI extends Model {
     pa_valor: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Parameters:
+ *       type: object
+ *       required:
+ *         - pa_id
+ *         - pa_clave
+ *         - pa_valor
+ *       properties:
+ *         pa_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del parámetro (Generado automáticamente)
+ *         pa_clave:
+ *           type: string
+ *           description: Clave única del parámetro
+ *         pa_valor:
+ *           type: string
+ *           description: Valor asignado al parámetro
+ */
 @Table({
     tableName: 'parameters',
     timestamps: true,

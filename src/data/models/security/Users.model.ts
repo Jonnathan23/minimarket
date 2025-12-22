@@ -15,6 +15,36 @@ export interface UsersI extends Model {
     us_estado: boolean;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Users:
+ *       type: object
+ *       required:
+ *         - us_id
+ *         - us_username
+ *         - us_password_encriptado
+ *         - us_nombre_completo
+ *         - us_estado
+ *       properties:
+ *         us_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del usuario (Generado automáticamente)
+ *         us_username:
+ *           type: string
+ *           description: Nombre de usuario único para el login
+ *         us_password_encriptado:
+ *           type: string
+ *           description: Contraseña encriptada del usuario
+ *         us_nombre_completo:
+ *           type: string
+ *           description: Nombre completo del usuario
+ *         us_estado:
+ *           type: boolean
+ *           description: Estado del usuario (activo/inactivo)
+ */
 @Table({
     tableName: 'users',
     timestamps: true,

@@ -11,6 +11,41 @@ export interface ClientsI extends Model {
     cl_preferencias_opcionales: string;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Clients:
+ *       type: object
+ *       required:
+ *         - cl_id
+ *         - cl_nombre
+ *         - cl_identificacion
+ *         - cl_telefono
+ *         - cl_correo
+ *       properties:
+ *         cl_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del cliente (Generado automáticamente)
+ *         cl_nombre:
+ *           type: string
+ *           description: Nombre completo del cliente
+ *         cl_identificacion:
+ *           type: string
+ *           description: Identificación oficial del cliente (Cédula/RUC)
+ *         cl_telefono:
+ *           type: string
+ *           description: Número de teléfono de contacto
+ *         cl_correo:
+ *           type: string
+ *           format: email
+ *           description: Correo electrónico del cliente
+ *         cl_preferencias_opcionales:
+ *           type: string
+ *           nullable: true
+ *           description: Preferencias opcionales del cliente
+ */
 @Table({
     tableName: 'clients',
     timestamps: true,

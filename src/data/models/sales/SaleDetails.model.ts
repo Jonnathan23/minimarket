@@ -10,6 +10,39 @@ export interface SaleDetailsI {
     sd_precio_unitario: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SaleDetails:
+ *       type: object
+ *       required:
+ *         - sd_id
+ *         - sd_sale_id
+ *         - sd_product_id
+ *         - sd_cantidad
+ *         - sd_precio_unitario
+ *       properties:
+ *         sd_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del detalle de venta (Generado automáticamente)
+ *         sd_sale_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID de la venta asociada
+ *         sd_product_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del producto vendido
+ *         sd_cantidad:
+ *           type: integer
+ *           description: Cantidad de productos vendidos
+ *         sd_precio_unitario:
+ *           type: number
+ *           format: float
+ *           description: Precio unitario de venta
+ */
 @Table({
     tableName: 'sale_details',
     timestamps: true,

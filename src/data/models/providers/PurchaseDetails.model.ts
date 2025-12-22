@@ -10,6 +10,39 @@ export interface PurchaseDetailsI {
     pd_precio_unitario: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     PurchaseDetails:
+ *       type: object
+ *       required:
+ *         - pd_id
+ *         - pd_purchase_id
+ *         - pd_product_id
+ *         - pd_cantidad
+ *         - pd_precio_unitario
+ *       properties:
+ *         pd_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID único del detalle de compra (Generado automáticamente)
+ *         pd_purchase_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID de la compra asociada
+ *         pd_product_id:
+ *           type: string
+ *           format: uuid
+ *           description: ID del producto comprado
+ *         pd_cantidad:
+ *           type: integer
+ *           description: Cantidad de productos comprados
+ *         pd_precio_unitario:
+ *           type: number
+ *           format: float
+ *           description: Costo unitario del producto en esta compra
+ */
 @Table({
     tableName: 'purchase_details',
     timestamps: true,
