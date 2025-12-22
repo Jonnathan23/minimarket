@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { envs, CorsConfig } from './config';
 import { DatabaseConnection } from './data';
 import router from './router';
+import { Documentacion } from './config/swagger';
 
 const urlDatabase = envs.NODE_ENV === 'testing'
     ? (envs.DATABASE_TEST_URL || envs.DATABASE_URL)
@@ -17,6 +18,7 @@ const db = new DatabaseConnection({
 db.connect()
 
 const server = express();
+
 /*
 const corsOptions = {
     FRONTEND_URL: envs.FRONTEND_URL,
@@ -35,5 +37,11 @@ server.use(morgan('dev'))
 
 //Routes
 server.use('/api', router)
+
+
+//Documentation
+const documentacion = new Documentacion()
+
+server.use('/docs', documentacion.serve, documentacion.setup())
 
 export default server;
