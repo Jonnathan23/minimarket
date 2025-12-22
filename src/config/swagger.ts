@@ -23,7 +23,10 @@ export class Documentacion {
                     },
                 },
             },
-            apis: ['./src/app/**/*.route.ts', './src/data/models/**/*.model.ts'],
+            apis: [
+                './src/app/**/*.ts',
+                './src/data/models/**/*.ts'
+            ],
         };
 
         this.spec = swaggerJsdoc(swaggerOptions);
