@@ -31,7 +31,7 @@ export class AuthController {
                 return res.status(401).json({ errors: 'Invalid credentials' })
             }
 
-            const token = JwtAdapter.generateToken(userFound.us_id);
+            const token = await JwtAdapter.generateToken({ id: userFound.us_id });
 
             res.status(200).json({token: token})
         } catch (error) {

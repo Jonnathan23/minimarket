@@ -31,7 +31,7 @@ authRouter.post('/register',
 authRouter.post('/login',
     body('us_username')
         .notEmpty().withMessage('Username is required')
-        .isLength({ min: 6 }).withMessage('Username must be at least 6 characters long'),
+        .isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
 
     body('us_password_encriptado')
         .notEmpty().withMessage("Password is required")
