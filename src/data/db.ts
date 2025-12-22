@@ -2,18 +2,18 @@ import { Sequelize } from "sequelize-typescript";
 import colors from 'colors'
 
 interface Options {
-    ulrDatabase: string
+    urlDatabase: string
     logging?: boolean
 }
 
 export class DatabaseConnection {
-    
+
     private readonly db: Sequelize
 
     constructor(options: Options) {
-        const { ulrDatabase, logging = false } = options        
+        const { urlDatabase, logging = false } = options
 
-        const db = new Sequelize(ulrDatabase, {
+        const db = new Sequelize(urlDatabase, {
             models: [__dirname + '/models/**/*.model.{ts,js}'],
             logging: logging
         })
@@ -24,7 +24,7 @@ export class DatabaseConnection {
     async connect(force: boolean = false) {
         try {
             await this.db.authenticate()
-            await this.db.sync({force})
+            await this.db.sync({ force })
             console.log(colors.blue.bold('Conexion exitosa a la BD'))
         } catch (error) {
             console.log(colors.red.bold('Error al conectar a la BD'))
@@ -39,5 +39,5 @@ export class DatabaseConnection {
     getConnection() {
         return this.db
     }
-    
+
 }

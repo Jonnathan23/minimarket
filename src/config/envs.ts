@@ -1,6 +1,10 @@
 import { get } from "env-var"
+import dotenv from "dotenv"
 
-process.loadEnvFile()
+// Load env file only if not in test environment (test env is loaded by jest.env.setup.cjs)
+if (process.env.NODE_ENV !== 'test') {
+    dotenv.config()
+}
 
 
 export const envs = {
