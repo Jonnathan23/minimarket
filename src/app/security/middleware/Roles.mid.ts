@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-export const roleExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
+export const validateRoleExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
     try {
         const role = await Roles.findByPk(id);
         if (!role) {

@@ -10,7 +10,7 @@ const urlDatabase = envs.NODE_ENV === 'testing'
     : envs.DATABASE_URL;
 
 const db = new DatabaseConnection({
-    ulrDatabase: urlDatabase,
+    urlDatabase: urlDatabase,
     logging: false
 })
 

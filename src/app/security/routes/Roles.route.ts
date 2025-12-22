@@ -1,18 +1,19 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { RolesController } from '../controllers/Roles.controller';
-import { roleExists } from '../middleware/Roles.mid';
+import { validateRoleExists } from '../middleware/Roles.mid';
 import { handleInputErrors } from '../../../middleware/handleErrors.mid';
 import { authenticate } from '../../../middleware/validationHeaders';
 
+
 const router = Router();
 
-router.param('roleId', roleExists);
+router.param('ro_id', validateRoleExists);
 
 router.use(authenticate);
 
-// POST /role - Create role
-router.post('/roles',
+// POST /api/roles - Create role
+router.post('/',
     [
         body('ro_nombre_del_rol').notEmpty().withMessage('Role name is required'),
         handleInputErrors
@@ -20,11 +21,11 @@ router.post('/roles',
     RolesController.create
 );
 
-router.get('/roles', RolesController.getAll);
+router.get('/', RolesController.getAll);
 
-router.get('/roles/:roleId', RolesController.getById);
+router.get('/:ro_id', RolesController.getById);
 
-router.put('/roles/:roleId',
+router.put('/:ro_id',
     [
         body('ro_nombre_del_rol').optional().notEmpty().withMessage('Role name cannot be empty'),
         handleInputErrors
@@ -32,6 +33,6 @@ router.put('/roles/:roleId',
     RolesController.update
 );
 
-router.delete('/roles/:roleId', RolesController.delete);
+router.delete('/:ro_id', RolesController.delete);
 
 export default router;

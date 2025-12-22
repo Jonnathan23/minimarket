@@ -15,7 +15,7 @@ export class RolesController {
     static async create(req: Request, res: Response) {
         try {
             const role = await Roles.create(req.body);
-            res.status(201).json(role);
+            res.status(201).json({ data: role });
         } catch (error) {
             res.status(500).json({ errors: error });
         }

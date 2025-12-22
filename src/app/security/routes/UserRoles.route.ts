@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import { UserRolesController } from '../controllers/UserRoles.controller';
 import { handleInputErrors } from '../../../middleware/handleErrors.mid';
+
+import { validateRoleExists } from '../middleware/Roles.mid';
 import { authenticate } from '../../../middleware/validationHeaders';
-import { roleExists } from '../middleware/Roles.mid';
 
 const router = Router();
 
-router.param('roleId', roleExists);
+router.param('roleId', validateRoleExists);
 
 router.use(authenticate);
 
