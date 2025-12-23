@@ -67,3 +67,7 @@ El servidor estará disponible en `http://localhost:4000` (o el puerto definido 
 ## Variables de Entorno
 
 Crea un archivo `.env` basado en `.env.template` con las configuraciones necesarias.
+
+## Documentación
+
+La documentación de la API se encuentra en `http://localhost:4000/docs`.
