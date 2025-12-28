@@ -9,6 +9,7 @@ export class RolesController {
             res.status(200).json(roles);
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 
@@ -18,6 +19,7 @@ export class RolesController {
             res.status(201).json({ data: role });
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 
@@ -38,6 +40,7 @@ export class RolesController {
             res.status(200).json({ message: 'Role deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 
@@ -46,6 +49,7 @@ export class RolesController {
             res.status(200).json(req.role);
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 }

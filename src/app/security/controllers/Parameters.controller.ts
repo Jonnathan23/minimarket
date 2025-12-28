@@ -38,6 +38,7 @@ export class ParametersController {
             res.status(200).json({ message: 'Parameter deleted' });
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 
@@ -46,6 +47,7 @@ export class ParametersController {
             res.status(200).json(req.parameter);
         } catch (error) {
             res.status(500).json({ errors: error });
+            return;
         }
     }
 }

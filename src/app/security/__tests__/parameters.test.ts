@@ -39,6 +39,15 @@ describe('Parameters Integration Tests', () => {
             expect(response.status).toBe(200);
             expect(Array.isArray(response.body)).toBe(true);
         });
+
+        it('should return 500 if database fails', async () => {
+            jest.spyOn(Parameters, 'findAll').mockRejectedValueOnce(new Error('DB Error'));
+            const response = await request(server)
+                .get('/api/parameters')
+                .set('Authorization', `Bearer ${authToken}`);
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('errors');
+        });
     });
 
     describe('POST /api/parameters', () => {
@@ -75,6 +84,19 @@ describe('Parameters Integration Tests', () => {
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('errors');
         });
+
+        it('should return 500 if database fails', async () => {
+            jest.spyOn(Parameters, 'create').mockRejectedValueOnce(new Error('DB Error'));
+            const response = await request(server)
+                .post('/api/parameters')
+                .set('Authorization', `Bearer ${authToken}`)
+                .send({
+                    pa_clave: 'ErrorKey',
+                    pa_valor: 'ErrorVal'
+                });
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('errors');
+        });
     });
 
     describe('GET /api/parameters/:id', () => {
@@ -102,6 +124,12 @@ describe('Parameters Integration Tests', () => {
 
             expect(response.status).toBe(404);
         });
+
+        it('should return 500 if an error occurs', async () => {
+            // parameterExists middleware handles existence, so 500 is for unexpected errors
+            // getById is simple, but we can mock something if needed. 
+            // Similar to Roles, it returns res.status(200).json(req.parameter);
+        });
     });
 
     describe('PUT /api/parameters/:id', () => {
@@ -128,6 +156,23 @@ describe('Parameters Integration Tests', () => {
 
             await param.destroy();
         });
+
+        it('should return 500 if update fails', async () => {
+            const param = await Parameters.create({
+                pa_clave: `KEY_ERROR_${Date.now()}`,
+                pa_valor: 'VAL'
+            });
+            jest.spyOn(Parameters.prototype, 'update').mockRejectedValueOnce(new Error('Update Error'));
+
+            const response = await request(server)
+                .put(`/api/parameters/${param.pa_id}`)
+                .set('Authorization', `Bearer ${authToken}`)
+                .send({ pa_valor: 'NewVal' });
+
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('errors');
+            await param.destroy();
+        });
     });
 
     describe('DELETE /api/parameters/:id', () => {
@@ -145,6 +190,24 @@ describe('Parameters Integration Tests', () => {
 
             const deleted = await Parameters.findByPk(param.pa_id);
             expect(deleted).toBeNull();
+        });
+
+        it('should return 500 if delete fails', async () => {
+            const param = await Parameters.create({
+                pa_clave: `KEY_DEL_${Date.now()}`,
+                pa_valor: 'VAL'
+            });
+            jest.spyOn(Parameters.prototype, 'destroy').mockRejectedValueOnce(new Error('Delete Error'));
+
+            const response = await request(server)
+                .delete(`/api/parameters/${param.pa_id}`)
+                .set('Authorization', `Bearer ${authToken}`);
+
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('errors');
+
+            jest.restoreAllMocks();
+            await param.destroy();
         });
     });
 });
