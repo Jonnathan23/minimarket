@@ -22,8 +22,8 @@ authRouter.post('/register',
         .notEmpty().withMessage("All fields are required")
         .isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
 
-    findUserExists,
     handleInputErrors,
+    findUserExists,
     AuthController.register
 );
 
@@ -37,7 +37,7 @@ authRouter.post('/login',
         .notEmpty().withMessage("Password is required")
         .isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
 
-    validateUserExists,
     handleInputErrors,
+    validateUserExists,
     AuthController.login
 );

@@ -18,6 +18,7 @@ export class AuthController {
 
             res.status(201).send("User registered successfully");
         } catch (error) {
+            console.log(error);
             res.status(500).json({ errors: error })
         }
     }

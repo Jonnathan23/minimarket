@@ -15,7 +15,7 @@ const db = new DatabaseConnection({
     logging: false
 })
 
-db.connect()
+//db.connect()
 
 const server = express();
 
@@ -44,4 +44,5 @@ const documentacion = new Documentacion()
 
 server.use('/docs', documentacion.serve, documentacion.setup())
 
+export { db }
 export default server;

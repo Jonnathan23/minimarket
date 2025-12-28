@@ -13,6 +13,7 @@ declare global {
 
 export const findUserExists = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        
         const user = await Users.findOne({ where: { us_username: req.body.us_username } });
         if (user) {
             res.status(400).json({ message: 'User already exists' });

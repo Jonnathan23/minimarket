@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../server';
+import server, { db } from '../../../server';
 import Roles from '../../../data/models/security/Roles.model';
 import { Users } from '../../../data/models/security';
 import { JwtAdapter } from '../../../utils';
@@ -10,6 +10,9 @@ describe('Roles Integration Tests', () => {
 
     beforeAll(async () => {
         // Create a user for authentication
+        await db.connect();
+
+
         const uniqueSuffix = Date.now().toString();
         const user = await Users.create({
             us_username: `testuser_${uniqueSuffix}`,
@@ -26,6 +29,7 @@ describe('Roles Integration Tests', () => {
         if (userId) {
             await Users.destroy({ where: { us_id: userId } });
         }
+        await db.disconnect();
     });
 
     describe('GET /api/roles', () => {

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../server';
+import server, { db } from '../../../server';
 import Parameters from '../../../data/models/security/Parameters.model';
 import { Users } from '../../../data/models/security';
 import { JwtAdapter } from '../../../utils';
@@ -9,6 +9,9 @@ describe('Parameters Integration Tests', () => {
     let userId: string;
 
     beforeAll(async () => {
+        await db.connect();
+
+
         const uniqueSuffix = Date.now().toString();
         const user = await Users.create({
             us_username: `param_tester_${uniqueSuffix}`,
@@ -24,12 +27,13 @@ describe('Parameters Integration Tests', () => {
         if (userId) {
             await Users.destroy({ where: { us_id: userId } });
         }
+        await db.disconnect();
     });
 
-    describe('GET /api/parameters/parameters', () => {
+    describe('GET /api/parameters', () => {
         it('should return 200 and a list of parameters', async () => {
             const response = await request(server)
-                .get('/api/parameters/parameters')
+                .get('/api/parameters')
                 .set('Authorization', `Bearer ${authToken}`);
 
             expect(response.status).toBe(200);
@@ -37,13 +41,13 @@ describe('Parameters Integration Tests', () => {
         });
     });
 
-    describe('POST /api/parameters/parameters', () => {
+    describe('POST /api/parameters', () => {
         it('should return 201 and the created parameter', async () => {
             const paramKey = `IVA_${Date.now()}`;
             const paramValue = '15%';
 
             const response = await request(server)
-                .post('/api/parameters/parameters')
+                .post('/api/parameters')
                 .set('Authorization', `Bearer ${authToken}`)
                 .send({
                     pa_clave: paramKey,
@@ -61,7 +65,7 @@ describe('Parameters Integration Tests', () => {
 
         it('should return 400 if validation fails', async () => {
             const response = await request(server)
-                .post('/api/parameters/parameters')
+                .post('/api/parameters')
                 .set('Authorization', `Bearer ${authToken}`)
                 .send({
                     // Missing required fields
@@ -73,7 +77,7 @@ describe('Parameters Integration Tests', () => {
         });
     });
 
-    describe('GET /api/parameters/parameters/:id', () => {
+    describe('GET /api/parameters/:id', () => {
         it('should return 200 and the parameter if it exists', async () => {
             const param = await Parameters.create({
                 pa_clave: `KEY_${Date.now()}`,
@@ -81,7 +85,7 @@ describe('Parameters Integration Tests', () => {
             });
 
             const response = await request(server)
-                .get(`/api/parameters/parameters/${param.pa_id}`)
+                .get(`/api/parameters/${param.pa_id}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
             expect(response.status).toBe(200);
@@ -93,14 +97,14 @@ describe('Parameters Integration Tests', () => {
         it('should return 404 if parameter does not exist', async () => {
             const fakeId = '00000000-0000-0000-0000-000000000000';
             const response = await request(server)
-                .get(`/api/parameters/parameters/${fakeId}`)
+                .get(`/api/parameters/${fakeId}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
-            expect(response.status).toBe(404); // Assuming middleware handles existence check
+            expect(response.status).toBe(404);
         });
     });
 
-    describe('PUT /api/parameters/parameters/:id', () => {
+    describe('PUT /api/parameters/:id', () => {
         it('should return 200 and the updated parameter', async () => {
             const param = await Parameters.create({
                 pa_clave: `OLD_KEY_${Date.now()}`,
@@ -109,7 +113,7 @@ describe('Parameters Integration Tests', () => {
 
             const newValue = 'NEW_VALUE';
             const response = await request(server)
-                .put(`/api/parameters/parameters/${param.pa_id}`)
+                .put(`/api/parameters/${param.pa_id}`)
                 .set('Authorization', `Bearer ${authToken}`)
                 .send({
                     pa_valor: newValue
@@ -126,7 +130,7 @@ describe('Parameters Integration Tests', () => {
         });
     });
 
-    describe('DELETE /api/parameters/parameters/:id', () => {
+    describe('DELETE /api/parameters/:id', () => {
         it('should return 200 and delete the parameter', async () => {
             const param = await Parameters.create({
                 pa_clave: `DEL_KEY_${Date.now()}`,
@@ -134,7 +138,7 @@ describe('Parameters Integration Tests', () => {
             });
 
             const response = await request(server)
-                .delete(`/api/parameters/parameters/${param.pa_id}`)
+                .delete(`/api/parameters/${param.pa_id}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
             expect(response.status).toBe(200);

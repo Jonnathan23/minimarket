@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../server';
+import server, { db } from '../../../server';
 import Roles from '../../../data/models/security/Roles.model';
 import { Users } from '../../../data/models/security';
 import { JwtAdapter } from '../../../utils';
@@ -12,6 +12,9 @@ describe('UserRoles Integration Tests', () => {
     let roleId: string;
 
     beforeAll(async () => {
+
+        await db.connect();
+
         const uniqueSuffix = Date.now().toString();
 
         // Admin user (who makes requests)
@@ -42,8 +45,11 @@ describe('UserRoles Integration Tests', () => {
 
     afterAll(async () => {
         if (targetUserId) {
-            await UserRoles.destroy({ where: { us_id: targetUserId } });
-            await Users.destroy({ where: { us_id: targetUserId } });
+            // MAL: await UserRoles.destroy({ where: { us_id: targetUserId } });
+            // BIEN:
+            await UserRoles.destroy({ where: { ur_user_id: targetUserId } });
+
+            await Users.destroy({ where: { us_id: targetUserId } }); // Este sí es us_id porque es la tabla Users
         }
         if (roleId) {
             await Roles.destroy({ where: { ro_id: roleId } });
@@ -51,63 +57,78 @@ describe('UserRoles Integration Tests', () => {
         if (userId) {
             await Users.destroy({ where: { us_id: userId } });
         }
+
+        await db.disconnect();
     });
 
-    describe('POST /api/user-roles/user-roles/assign/:userId/:roleId', () => {
+    describe('POST /api/user-roles/assign/:userId/:roleId', () => {
         it('should return 201 and assign the role', async () => {
             const response = await request(server)
-                .post(`/api/user-roles/user-roles/assign/${targetUserId}/${roleId}`)
+                .post(`/api/user-roles/assign/${targetUserId}/${roleId}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
             // ...
         });
     });
 
-    describe('GET /api/user-roles/user-roles/list/:userId', () => {
-        it('should return 200 and list the user roles', async () => {
-            // Assign role first to ensure there is something to list
-            await UserRoles.create({
-                us_id: targetUserId,
-                ro_id: roleId
+    describe('DELETE /api/user-roles/remove/:userId/:roleId', () => {
+        it('should return 200 and remove the role', async () => {
+            const existing = await UserRoles.findOne({
+                where: { ur_user_id: targetUserId, ur_role_id: roleId }
             });
 
-            const response = await request(server)
-                .get(`/api/user-roles/user-roles/list/${targetUserId}`)
-                .set('Authorization', `Bearer ${authToken}`);
-
-            expect(response.status).toBe(200);
-            expect(Array.isArray(response.body)).toBe(true);
-            const roles = response.body.map((r: any) => r.ro_id);
-            expect(roles).toContain(roleId);
-        });
-    });
-
-    describe('DELETE /api/user-roles/user-roles/remove/:userId/:roleId', () => {
-        it('should return 200 and remove the role', async () => {
-            // Ensure role is assigned before deleting
-            const existing = await UserRoles.findOne({ where: { us_id: targetUserId, ro_id: roleId } });
             if (!existing) {
+                // MAL: us_id, ro_id
+                // BIEN:
                 await UserRoles.create({
-                    us_id: targetUserId,
-                    ro_id: roleId
+                    ur_user_id: targetUserId,
+                    ur_role_id: roleId
                 });
             }
 
             const response = await request(server)
-                .delete(`/api/user-roles/user-roles/remove/${targetUserId}/${roleId}`)
+                .delete(`/api/user-roles/remove/${targetUserId}/${roleId}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
             expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Role removed successfully');
+            expect(response.body).toHaveProperty('message');
+            expect(response.body.message).toBe('Role removed from user'); // Ojo: Ajusté el mensaje a lo que dice tu controller
 
-            // Verify in DB
+            // Verify in DB that the role was removed
             const userRole = await UserRoles.findOne({
                 where: {
-                    us_id: targetUserId,
-                    ro_id: roleId
+                    // MAL: us_id, ro_id
+                    // BIEN:
+                    ur_user_id: targetUserId,
+                    ur_role_id: roleId
                 }
             });
             expect(userRole).toBeNull();
+        });
+    });
+
+    describe('GET /api/user-roles/list/:userId', () => {
+        it('should return 200 and list the user roles', async () => {
+            const existing = await UserRoles.findOne({
+                where: { ur_user_id: targetUserId, ur_role_id: roleId }
+            });
+
+            if (!existing) {
+                await UserRoles.create({
+                    ur_user_id: targetUserId,
+                    ur_role_id: roleId
+                });
+            }
+
+            const response = await request(server)
+                .get(`/api/user-roles/list/${targetUserId}`)
+                .set('Authorization', `Bearer ${authToken}`);
+
+            expect(response.status).toBe(200);
+            expect(Array.isArray(response.body)).toBe(true);
+
+            const roleIds = response.body.map((r: any) => r.ur_role_id);
+            expect(roleIds).toContain(roleId);
         });
     });
 });

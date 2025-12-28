@@ -1,5 +1,5 @@
 import request from 'supertest';
-import server from '../../../server';
+import server, { db } from '../../../server';
 import { Users } from '../../../data/models/security';
 import { BcryptAdapter } from '../../../utils';
 
@@ -8,10 +8,16 @@ describe('Auth Integration Tests', () => {
     // Clean up created users after tests
     const createdUserIds: string[] = [];
 
+    beforeAll(async () => {
+        await db.connect(); // 1. Abrir conexión
+    });
+
     afterAll(async () => {
         if (createdUserIds.length > 0) {
             await Users.destroy({ where: { us_id: createdUserIds } });
         }
+
+        await db.disconnect();
     });
 
     describe('POST /api/auth/register', () => {
