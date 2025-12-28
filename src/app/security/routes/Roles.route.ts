@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { RolesController } from '../controllers/Roles.controller';
 import { validateRoleExists } from '../middleware/Roles.mid';
 import { handleInputErrors } from '../../../middleware/handleErrors.mid';
@@ -23,16 +23,25 @@ router.post('/',
 
 router.get('/', RolesController.getAll);
 
-router.get('/:ro_id', RolesController.getById);
+router.get('/:ro_id',
+    param('ro_id').notEmpty().withMessage('Role ID is required'),
+    handleInputErrors,
+    RolesController.getById
+);
 
 router.put('/:ro_id',
     [
+        param('ro_id').notEmpty().withMessage('Role ID is required'),
         body('ro_nombre_del_rol').optional().notEmpty().withMessage('Role name cannot be empty'),
         handleInputErrors
     ],
     RolesController.update
 );
 
-router.delete('/:ro_id', RolesController.delete);
+router.delete('/:ro_id',
+    param('ro_id').notEmpty().withMessage('Role ID is required'),
+    handleInputErrors,
+    RolesController.delete
+);
 
 export default router;

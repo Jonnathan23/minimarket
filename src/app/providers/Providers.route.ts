@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { ProvidersController } from './controllers/Providers.controller';
 import { providerExists } from './middleware/Providers.mid';
 import { handleInputErrors } from '../../middleware/handleErrors.mid';
@@ -26,10 +26,15 @@ router.post('/provider',
 
 router.get('/', ProvidersController.getAll);
 
-router.get('/:providerId', ProvidersController.getById);
+router.get('/:providerId',
+    param('providerId').notEmpty().withMessage('Provider ID is required'),
+    handleInputErrors,
+    ProvidersController.getById
+);
 
 router.put('/:providerId',
     [
+        param('providerId').notEmpty().withMessage('Provider ID is required'),
         body('po_nombre').optional().notEmpty(),
         body('po_RUC_NIT').optional().notEmpty(),
         body('po_direccion').optional().notEmpty(),
@@ -40,6 +45,10 @@ router.put('/:providerId',
     ProvidersController.update
 );
 
-router.delete('/:providerId', ProvidersController.delete);
+router.delete('/:providerId',
+    param('providerId').notEmpty().withMessage('Provider ID is required'),
+    handleInputErrors,
+    ProvidersController.delete
+);
 
 export default router;

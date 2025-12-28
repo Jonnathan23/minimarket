@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { ParametersController } from '../controllers/Parameters.controller';
 import { parameterExists } from '../middleware/Parameters.mid';
 import { handleInputErrors } from '../../../middleware/handleErrors.mid';
@@ -23,10 +23,15 @@ router.post('/',
 
 router.get('/', ParametersController.getAll);
 
-router.get('/:parameterId', ParametersController.getById);
+router.get('/:parameterId',
+    param('parameterId').notEmpty().withMessage('Parameter ID is required'),
+    handleInputErrors,
+    ParametersController.getById
+);
 
 router.put('/:parameterId',
     [
+        param('parameterId').notEmpty().withMessage('Parameter ID is required'),
         body('pa_clave').optional().notEmpty(),
         body('pa_valor').optional().notEmpty(),
         handleInputErrors
@@ -34,6 +39,10 @@ router.put('/:parameterId',
     ParametersController.update
 );
 
-router.delete('/:parameterId', ParametersController.delete);
+router.delete('/:parameterId',
+    param('parameterId').notEmpty().withMessage('Parameter ID is required'),
+    handleInputErrors,
+    ParametersController.delete
+);
 
 export default router;

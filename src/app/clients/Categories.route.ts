@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { CategoriesController } from './controllers/Categories.controller';
 import { categoryExists } from './middleware/Categories.mid';
 import { handleInputErrors } from '../../middleware/handleErrors.mid';
@@ -23,10 +23,15 @@ router.post('/',
 
 router.get('/', CategoriesController.getAll);
 
-router.get('/:categoryId', CategoriesController.getById);
+router.get('/:categoryId',
+    param('categoryId').notEmpty().withMessage('Category ID is required'),
+    handleInputErrors,
+    CategoriesController.getById
+);
 
 router.put('/:categoryId',
     [
+        param('categoryId').notEmpty().withMessage('Category ID is required'),
         body('ca_name').optional().notEmpty(),
         body('ca_descripcion').optional().notEmpty(),
         handleInputErrors
@@ -34,6 +39,10 @@ router.put('/:categoryId',
     CategoriesController.update
 );
 
-router.delete('/:categoryId', CategoriesController.delete);
+router.delete('/:categoryId',
+    param('categoryId').notEmpty().withMessage('Category ID is required'),
+    handleInputErrors,
+    CategoriesController.delete
+);
 
 export default router;

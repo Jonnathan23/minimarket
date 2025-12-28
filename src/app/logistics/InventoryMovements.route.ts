@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
 import { inventoryMovementExists } from './middleware/InventoryMovements.mid';
 import { productExists } from '../clients/middleware/Products.mid'; // Import shared middleware
@@ -16,6 +16,7 @@ router.use(authenticate);
 router.param('productId', productExists);
 
 router.post('/movement/:productId',
+    param('productId').notEmpty().withMessage('Product ID is required'),
     [
         body('im_tipo').isIn(['ENTRADA', 'SALIDA']).withMessage('Type must be ENTRADA or SALIDA'),
         body('im_cantidad').isInt({ gt: 0 }).withMessage('Quantity must be greater than 0'),

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { ProductsController } from './controllers/Products.controller';
 import { productExists } from './middleware/Products.mid';
 import { categoryExists } from './middleware/Categories.mid';
@@ -16,6 +16,7 @@ router.use(authenticate);
 // POST /product/:categoryId - Create product for this category
 router.post('/category/:categoryId',
     [
+        param('categoryId').notEmpty().withMessage('Category ID is required'),
         body('pr_name').notEmpty().withMessage('Name is required'),
         // RF-03: Validate price > 0
         body('pr_price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
@@ -27,10 +28,15 @@ router.post('/category/:categoryId',
 
 router.get('/', ProductsController.getAll);
 
-router.get('/:productId', ProductsController.getById);
+router.get('/:productId',
+    param('productId').notEmpty().withMessage('Product ID is required'),
+    handleInputErrors,
+    ProductsController.getById
+);
 
 router.put('/:productId',
     [
+        param('productId').notEmpty().withMessage('Product ID is required'),
         body('pr_name').optional().notEmpty(),
         body('pr_price').optional().isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
         body('pr_availability').optional().isBoolean(),
@@ -39,6 +45,10 @@ router.put('/:productId',
     ProductsController.update
 );
 
-router.delete('/:productId', ProductsController.delete);
+router.delete('/:productId',
+    param('productId').notEmpty().withMessage('Product ID is required'),
+    handleInputErrors,
+    ProductsController.delete
+);
 
 export default router;
