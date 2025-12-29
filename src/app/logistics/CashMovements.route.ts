@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { CashMovementsController } from './controllers/CashMovements.controller';
 import { cashMovementExists } from './middleware/CashMovements.mid';
 import { handleInputErrors } from '../../middleware/handleErrors.mid';
@@ -24,6 +24,10 @@ router.post('/cash',
 
 router.get('/', CashMovementsController.getAll);
 
-router.get('/:cashMovementId', CashMovementsController.getById);
+router.get('/:cashMovementId',
+    param('cashMovementId').notEmpty().withMessage('Cash Movement ID is required'),
+    handleInputErrors,
+    CashMovementsController.getById
+);
 
 export default router;

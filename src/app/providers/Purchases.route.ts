@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { PurchasesController } from './controllers/Purchases.controller';
 import { purchaseExists } from './middleware/Purchases.mid';
 import { providerExists } from './middleware/Providers.mid';
@@ -21,6 +21,8 @@ router.use(authenticate);
 // Route: /purchase/:providerId/product/:productId
 router.post('/purchase/:providerId/product/:productId',
     [
+        param('providerId').notEmpty().withMessage('Provider ID is required'),
+        param('productId').notEmpty().withMessage('Product ID is required'),
         body('pu_fecha').isISO8601().toDate().withMessage('Date must be valid ISO8601'),
         body('pu_total').isFloat({ gt: 0 }).withMessage('Total must be greater than 0'),
         body('details').isArray().withMessage('Details must be an array'),
@@ -34,6 +36,10 @@ router.post('/purchase/:providerId/product/:productId',
 
 router.get('/', PurchasesController.getAll);
 
-router.get('/:purchaseId', PurchasesController.getById);
+router.get('/:purchaseId',
+    param('purchaseId').notEmpty().withMessage('Purchase ID is required'),
+    handleInputErrors,
+    PurchasesController.getById
+);
 
 export default router;

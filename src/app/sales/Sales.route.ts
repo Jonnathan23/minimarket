@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
 import { clientExists } from '../clients/middleware/Clients.mid'; // Assuming this exists
 import { handleInputErrors } from '../../middleware/handleErrors.mid';
@@ -23,6 +23,8 @@ router.use(authenticate);
 // Route: /sale/:clientId/product/:productId
 router.post('/sale/:clientId/product/:productId',
     [
+        param('clientId').notEmpty().withMessage('Client ID is required'),
+        param('productId').notEmpty().withMessage('Product ID is required'),
         // sa_client_id handled by URL
         body('sa_fecha').isISO8601().toDate().withMessage('Date must be valid ISO8601'),
         body('sa_total').isFloat({ gt: 0 }).withMessage('Total must be greater than 0'),
@@ -38,6 +40,10 @@ router.post('/sale/:clientId/product/:productId',
 
 router.get('/', SalesController.getAll);
 
-router.get('/:saleId', SalesController.getById);
+router.get('/:saleId',
+    param('saleId').notEmpty().withMessage('Sale ID is required'),
+    handleInputErrors,
+    SalesController.getById
+);
 
 export default router;
