@@ -98,8 +98,6 @@ describe('Auth Integration Tests', () => {
         });
 
         it('should return 400 if user does not exist (via validation)', async () => {
-            // Depending on validation middleware, this might satisfy "validateUserExists" which might check if user exists.
-            // Checking auth.route.ts: validateUserExists is used.
             const response = await request(server)
                 .post('/api/auth/login')
                 .send({
@@ -107,14 +105,6 @@ describe('Auth Integration Tests', () => {
                     us_password_encriptado: 'password123'
                 });
 
-            // validateUserExists usually returns 400 or 404 if user not found, let's check middleware.
-            // If validation fails it might return 400/404/422. 
-            // Common pattern: 400 for bad input, 404/400 for not found in validation.
-            // Let's assume 400 based on standard, but we'll see if it fails.
-            // Looking at file `src/app/security/routes/auth.route.ts`, it uses `validateUserExists`.
-
-            // If `validateUserExists` checks DB, it likely throws error if not found.
-            // If this test is fragile we can adjust.
             expect(response.status).not.toBe(200);
         });
     });

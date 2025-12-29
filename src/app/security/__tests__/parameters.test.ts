@@ -125,11 +125,7 @@ describe('Parameters Integration Tests', () => {
             expect(response.status).toBe(404);
         });
 
-        it('should return 500 if an error occurs', async () => {
-            // parameterExists middleware handles existence, so 500 is for unexpected errors
-            // getById is simple, but we can mock something if needed. 
-            // Similar to Roles, it returns res.status(200).json(req.parameter);
-        });
+
     });
 
     describe('PUT /api/parameters/:id', () => {

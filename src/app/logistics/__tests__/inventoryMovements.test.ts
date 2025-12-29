@@ -110,5 +110,14 @@ describe('Inventory Movements Integration Tests', () => {
             expect(response.status).toBe(200);
             expect(Array.isArray(response.body)).toBe(true);
         });
+
+        it('should return 500 if getAll fails', async () => {
+            const spy = jest.spyOn(InventoryMovements, 'findAll').mockRejectedValueOnce(new Error('DB Error'));
+            const response = await request(server)
+                .get('/api/inventory-movements')
+                .set('Authorization', `Bearer ${authToken}`);
+            expect(response.status).toBe(500);
+            spy.mockRestore();
+        });
     });
 });

@@ -22,11 +22,16 @@ describe('Cash Movements Integration Tests', () => {
     });
 
     afterAll(async () => {
-        if (userId) {
-            await CashMovements.destroy({ where: { cm_user_id: userId } });
-            await Users.destroy({ where: { us_id: userId } });
+        try {
+            if (userId) {
+                await CashMovements.destroy({ where: { cm_user_id: userId } });
+                await Users.destroy({ where: { us_id: userId } });
+            }
+        } catch (error) {
+            console.error("Cleanup error:", error);
+        } finally {
+            await db.disconnect();
         }
-        await db.disconnect();
     });
 
     describe('POST /api/cash-movements/cash', () => {
@@ -77,6 +82,43 @@ describe('Cash Movements Integration Tests', () => {
             expect(response.status).toBe(500);
             spy.mockRestore();
         });
+
+        it('should return 401 if user id is missing in request', async () => {
+            // Mock findByPk to return user without us_id to trigger line 22
+            const spy = jest.spyOn(Users, 'findByPk').mockResolvedValue({ us_nombre_completo: 'No ID' } as any);
+
+            const response = await request(server)
+                .post('/api/cash-movements/cash')
+                .set('Authorization', `Bearer ${authToken}`)
+                .send({
+                    cm_fecha: new Date().toISOString(),
+                    cm_tipo: 'APERTURA',
+                    cm_monto: 100
+                });
+
+            expect(response.status).toBe(401);
+            expect(response.body.error).toBe('User not authenticated');
+            spy.mockRestore();
+        });
+    });
+
+    describe('GET /api/cash-movements', () => {
+        it('should return 200 and list movements', async () => {
+            const response = await request(server)
+                .get('/api/cash-movements')
+                .set('Authorization', `Bearer ${authToken}`);
+            expect(response.status).toBe(200);
+            expect(Array.isArray(response.body)).toBe(true);
+        });
+
+        it('should return 500 if getAll fails', async () => {
+            const spy = jest.spyOn(CashMovements, 'findAll').mockRejectedValueOnce(new Error('DB Error'));
+            const response = await request(server)
+                .get('/api/cash-movements')
+                .set('Authorization', `Bearer ${authToken}`);
+            expect(response.status).toBe(500);
+            spy.mockRestore();
+        });
     });
 
 
@@ -94,10 +136,6 @@ describe('Cash Movements Integration Tests', () => {
                 .get(`/api/cash-movements/${cm.cm_id}`)
                 .set('Authorization', `Bearer ${authToken}`);
 
-            // If param name collision occurs in express (e.g. both use /:id), it might check regex or order.
-            // Cash uses :cashMovementId. Inventory doesn't have a generic /:id, it has /movement/:productId (POST).
-            // So /api/logistics/:cashMovementId should match CashMovements.route.ts if mounted correctly.
-
             if (response.status === 404) {
                 // Fallback if routing issue, but we expect it to work if configured.
             } else {
@@ -105,6 +143,30 @@ describe('Cash Movements Integration Tests', () => {
                 expect(response.body.cm_id).toBe(cm.cm_id);
             }
 
+            await cm.destroy();
+        });
+
+        it('should return 500 if getById fails internally', async () => {
+            // Since getById is very simple, we force an error by mocking a response method
+            const cm = await CashMovements.create({
+                cm_fecha: new Date(),
+                cm_tipo: 'ARQUEO',
+                cm_monto: 200,
+                cm_user_id: userId
+            } as any);
+
+            // Mocking status to throw error to hit catch block
+            const spy = jest.spyOn(server.response, 'status').mockImplementationOnce(() => {
+                throw new Error('Simulation Error');
+            });
+
+            const response = await request(server)
+                .get(`/api/cash-movements/${cm.cm_id}`)
+                .set('Authorization', `Bearer ${authToken}`);
+
+
+            expect(response.status).toBe(500);
+            spy.mockRestore();
             await cm.destroy();
         });
     });

@@ -124,13 +124,7 @@ describe('Roles Integration Tests', () => {
             expect(response.body).toHaveProperty('error');
         });
 
-        it('should return 500 if an error occurs', async () => {
-            // Force error in getById
-            // Since getById just returns req.role, we might need a different strategy 
-            // but the controller has a try-catch looking for errors.
-            // Actually, in getById, it just sends req.role. We'll skip forcing 500 if it's too trivial
-            // but the controller has a try catch.
-        });
+
     });
 
     describe('PUT /api/roles/:id', () => {
