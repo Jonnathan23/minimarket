@@ -2,6 +2,24 @@
 
 API REST para el sistema de minimarket.
 
+## 📋 Índice
+
+- [Instalación de Bun](#instalación-de-bun-opcional)
+- [Instalación del Proyecto](#instalación)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Desarrollo](#desarrollo)
+- [Variables de Entorno](#variables-de-entorno)
+- [Documentación de la API](#documentación)
+- [Pruebas (Testing)](#tests)
+    - [Configuración Previa](#configuración-previa)
+    - [Ejecutar Tests](#ejecutar-tests)
+    - [Resultados de Cobertura](#resultados-de-cobertura)
+- [Módulos Testeados](#módulos-testeados)
+- [Arquitectura y Tecnologías](#️-arquitectura-y-tecnologías)
+- [Licencia](#-licencia)
+
+---
+
 ### Instalación de Bun (Opcional)
 
 [Bun](https://bun.sh) es un runtime de JavaScript rápido y todo-en-uno.
