@@ -72,6 +72,9 @@ Crea un archivo `.env` basado en `.env.template` con las configuraciones necesar
 
 La documentación de la API se encuentra en `http://localhost:4000/docs`.
 
+> **Nota:**
+> Para lograr visualizar la documentación de la API es necesario iniciar el servidor con el script `dev:api`. Caso contrario los cors no permitiran peticiones a la API.
+
 ## Tests
 
 ### Configuración Previa
@@ -155,3 +158,27 @@ El reporte de cobertura HTML se genera automáticamente en la carpeta `coverage/
 - **Providers**: Proveedores, Compras
 - **Logistics**: Movimientos de Inventario, Movimientos de Caja
 - **Sales**: Ventas
+
+## 🏗️ Arquitectura y Tecnologías
+
+Este proyecto sigue el patrón de arquitectura **MVC (Modelo-Vista-Controlador)**, organizando la lógica de negocio, el acceso a datos y las rutas de manera modular y escalable.
+
+* **Lenguaje:** TypeScript (Superset de JavaScript con tipado estático).
+* **Runtime:** Compatible con [Node.js](https://nodejs.org/) y [Bun](https://bun.sh/).
+* **Arquitectura:** MVC (Model-View-Controller) para el backend.
+* **Estilo de Código:** Kernighan y Ritchie (K&R) con variables en camelCase/PascalCase y lógica en inglés.
+* **Base de Datos:** PostgreSQL utilizando Sequelize como ORM (Object-Relational Mapping).
+* **Documentación:** Swagger (OpenAPI 3.0) con enfoque modular.
+* **Testing:** Suite completa de pruebas de integración con Jest y Supertest, validando controladores y modelos al 100%.
+
+
+
+## 📄 Licencia
+
+Este proyecto está bajo la **Licencia MIT**. Esto significa que eres libre de usar, copiar, modificar y distribuir el software, siempre y cuando se mantenga el aviso de copyright original.
+
+> **Nota Legal:**
+> * **Limitación de Responsabilidad:** El autor no es responsable de ningún daño derivado del uso de este software.
+> * **Sin Garantía:** El software se entrega "tal cual", sin garantías de funcionamiento para propósitos específicos.
+
+Consulta el archivo [LICENSE](./LICENSE) para obtener más detalles.
