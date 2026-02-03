@@ -1,7 +1,7 @@
 import { CorsOptions } from "cors";
 
 interface Options {
-    //FRONTEND_URL: string
+    FRONTEND_URL: string
     argv_2: string    
     SWAGGER_URL: string
     NODE_ENV: string
@@ -11,10 +11,10 @@ export class CorsConfig {
     public corsOptions: CorsOptions;
 
     constructor(options: Options) {
-        const { argv_2, SWAGGER_URL, NODE_ENV } = options
+        const { FRONTEND_URL, argv_2, SWAGGER_URL, NODE_ENV } = options
         this.corsOptions = {
             origin: function (origin, callback) {
-                const whitelist: Array<string | undefined> = []
+                const whitelist: Array<string | undefined> = [FRONTEND_URL]
                 if (argv_2 === '--api' || NODE_ENV === 'testing') {
                     whitelist.push(undefined)
                     whitelist.push(SWAGGER_URL)
