@@ -22,7 +22,7 @@ const server = express();
 
 const corsOptions = {
     FRONTEND_URL: envs.FRONTEND_URL,
-    argv_2: envs.DEVELOPMENT,    
+    argv_2: envs.DEVELOPMENT,
     SWAGGER_URL: envs.SWAGGER_URL,
     NODE_ENV: envs.NODE_ENV
 }
