@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import InventoryMovements from '../../../data/models/logistics/InventoryMovements.model';
+import { AppError } from '../../../utils/AppError';
 
 declare global {
     namespace Express {
@@ -9,15 +10,17 @@ declare global {
     }
 }
 
+
+
 export const inventoryMovementExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
     try {
         const movement = await InventoryMovements.findByPk(id);
         if (!movement) {
-            return res.status(404).json({ error: 'Inventory Movement not found' });
+            throw new AppError('Inventory Movement not found', 404);
         }
         req.inventoryMovement = movement;
         next();
     } catch (error) {
-        res.status(500).json({ errors: error });
+        next(error);
     }
 };

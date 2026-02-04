@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Categories from '../../../data/models/clients/Categories.model';
+import { AppError } from '../../../utils/AppError';
 
 declare global {
     namespace Express {
@@ -9,15 +10,17 @@ declare global {
     }
 }
 
+
+
 export const categoryExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
     try {
         const category = await Categories.findByPk(id);
         if (!category) {
-            return res.status(404).json({ error: 'Category not found' });
+            throw new AppError('Category not found', 404);
         }
         req.category = category;
         next();
     } catch (error) {
-        res.status(500).json({ errors: error });
+        next(error);
     }
 };

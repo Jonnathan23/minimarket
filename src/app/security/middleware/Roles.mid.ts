@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Roles from '../../../data/models/security/Roles.model';
+import { AppError } from '../../../utils/AppError';
 
 declare global {
     namespace Express {
@@ -9,15 +10,17 @@ declare global {
     }
 }
 
+
+
 export const validateRoleExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
     try {
         const role = await Roles.findByPk(id);
         if (!role) {
-            return res.status(404).json({ error: 'Role not found' });
+            throw new AppError('Role not found', 404);
         }
         req.role = role;
         next();
     } catch (error) {
-        res.status(500).json({ errors: error });
+        next(error);
     }
 };

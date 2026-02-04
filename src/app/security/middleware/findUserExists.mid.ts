@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Users } from "../../../data/models/security";
+import { AppError } from "../../../utils/AppError";
 
 declare global {
     namespace Express {
@@ -13,15 +14,14 @@ declare global {
 
 export const findUserExists = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+
         const user = await Users.findOne({ where: { us_username: req.body.us_username } });
         if (user) {
-            res.status(400).json({ message: 'User already exists' });
-            return
+            throw new AppError('User already exists', 409);
         }
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        next(error);
     }
 }
 
@@ -30,12 +30,11 @@ export const validateUserExists = async (req: Request, res: Response, next: Next
     try {
         const user = await Users.findOne({ where: { us_username: req.body.us_username } });
         if (!user) {
-            res.status(400).json({ message: 'User not found' });
-            return
+            throw new AppError('User not found', 404);
         }
         req.user = user;
         next();
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        next(error);
     }
 }

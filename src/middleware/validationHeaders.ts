@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import { Users } from "../data/models/security";
+import { AppError } from "../utils/AppError";
 
 import { JwtAdapter } from "../utils";
 
@@ -18,8 +19,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     const bearer = req.headers.authorization
 
     if (!bearer) {
-        res.status(401).json({ error: 'No autorizado' })
-        return
+        throw new AppError('No autorizado', 401)
     }
 
     const [, token] = bearer.split(' ')
@@ -28,25 +28,22 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         const decoded = await JwtAdapter.validateToken<{ id: string }>(token)
 
         if (!decoded) {
-            res.status(401).json({ error: 'Token inválido o expirado' })
-            return
+            throw new AppError('Token inválido o expirado', 401)
         }
 
         if (!decoded.id) {
-            res.status(401).json({ error: 'Token malformado' })
-            return
+            throw new AppError('Token malformado', 401)
         }
 
         const user = await Users.findByPk(decoded.id)
 
         if (!user) {
-            res.status(401).json({ error: 'Usuario no encontrado' })
-            return
+            throw new AppError('Usuario no encontrado', 404)
         }
 
         req.user = user
         next()
     } catch (error) {
-        res.status(401).json({ error: 'Token inválido' })
+        next(new AppError('Token inválido', 401))
     }
 }

@@ -5,6 +5,7 @@ import { envs, CorsConfig } from './config';
 import { DatabaseConnection } from './data';
 import router from './router';
 import { Documentacion } from './config/swagger';
+import { globalErrorHandler } from './middleware/globalErrorHandler';
 
 const urlDatabase = envs.NODE_ENV === 'testing'
     ? (envs.DATABASE_TEST_URL || envs.DATABASE_URL)
@@ -37,6 +38,9 @@ server.use(morgan('dev'))
 //Routes
 server.use('/api', router)
 
+
+//Errors
+server.use(globalErrorHandler)
 
 //Documentation
 const documentacion = new Documentacion()

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Parameters from '../../../data/models/security/Parameters.model';
+import { AppError } from '../../../utils/AppError';
 
 declare global {
     namespace Express {
@@ -9,15 +10,17 @@ declare global {
     }
 }
 
+
+
 export const parameterExists = async (req: Request, res: Response, next: NextFunction, id: string) => {
     try {
         const parameter = await Parameters.findByPk(id);
         if (!parameter) {
-            return res.status(404).json({ error: 'Parameter not found' });
+            throw new AppError('Parameter not found', 404);
         }
         req.parameter = parameter;
         next();
     } catch (error) {
-        res.status(500).json({ errors: error });
+        next(error);
     }
 };
