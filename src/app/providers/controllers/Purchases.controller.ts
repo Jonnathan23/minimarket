@@ -1,19 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Purchases from '../../../data/models/providers/Purchases.model';
 import PurchaseDetails from '../../../data/models/providers/PurchaseDetails.model';
+import { AppError } from '../../../utils/AppError';
 
 export class PurchasesController {
 
-    static async getAll(req: Request, res: Response) {
+    static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
             const purchases = await Purchases.findAll({ include: ['purchase_details'] });
             res.status(200).json(purchases);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { providerId, productId } = req.params;
             const { pu_fecha, pu_total, details } = req.body;
@@ -35,15 +36,15 @@ export class PurchasesController {
 
             res.status(201).json(purchase);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async getById(req: Request, res: Response) {
+    static async getById(req: Request, res: Response, next: NextFunction) {
         try {
             res.status(200).json(req.purchase);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 }

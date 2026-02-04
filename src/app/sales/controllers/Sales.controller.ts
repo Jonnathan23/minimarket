@@ -1,21 +1,22 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Sales from '../../../data/models/sales/Sales.model';
 import SaleDetails from '../../../data/models/sales/SaleDetails.model';
 import Products from '../../../data/models/clients/Products.model';
 import InventoryMovements from '../../../data/models/logistics/InventoryMovements.model';
+import { AppError } from '../../../utils/AppError';
 
 export class SalesController {
 
-    static async getAll(req: Request, res: Response) {
+    static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
             const sales = await Sales.findAll({ include: ['sale_details'] });
             res.status(200).json(sales);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { clientId, productId } = req.params;
             const { sa_fecha, sa_total, sa_medio_de_pago, details } = req.body;
@@ -23,7 +24,7 @@ export class SalesController {
             const sa_user_id = req.user?.us_id;
 
             if (!sa_user_id) {
-                return res.status(401).json({ error: 'User not authenticated' });
+                throw new AppError('User not authenticated', 401);
             }
 
             // Create Sale Header
@@ -65,16 +66,16 @@ export class SalesController {
             }
 
             res.status(201).json(sale);
-        } catch (error: any) {
-            res.status(500).json({ errors: error.message || error });
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async getById(req: Request, res: Response) {
+    static async getById(req: Request, res: Response, next: NextFunction) {
         try {
             res.status(200).json(req.sale);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 }

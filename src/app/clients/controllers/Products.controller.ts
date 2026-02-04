@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Products from '../../../data/models/clients/Products.model';
+import { AppError } from '../../../utils/AppError';
 
 export class ProductsController {
 
-    static async getAll(req: Request, res: Response) {
+    static async getAll(req: Request, res: Response, next: NextFunction) {
         try {
             // RF-01: List maximum 3 results ordered by ID descending
             const products = await Products.findAll({
@@ -12,11 +13,11 @@ export class ProductsController {
             });
             res.status(200).json(products);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async create(req: Request, res: Response) {
+    static async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { categoryId } = req.params;
             const { pr_name, pr_price, pr_availability } = req.body;
@@ -29,35 +30,35 @@ export class ProductsController {
             });
             res.status(201).json(product);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async update(req: Request, res: Response) {
+    static async update(req: Request, res: Response, next: NextFunction) {
         try {
             const product = req.product!;
             await product.update(req.body);
             res.status(200).json(product);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async delete(req: Request, res: Response) {
+    static async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const product = req.product!;
             await product.destroy();
             res.status(200).json({ message: 'Product deleted' });
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 
-    static async getById(req: Request, res: Response) {
+    static async getById(req: Request, res: Response, next: NextFunction) {
         try {
             res.status(200).json(req.product);
         } catch (error) {
-            res.status(500).json({ errors: error });
+            next(error);
         }
     }
 }
