@@ -1,5 +1,6 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import UserRoles from './UserRoles.model';
+import Users from './Users.model';
 
 
 export interface RolesI extends Model {
@@ -47,8 +48,11 @@ class Roles extends Model {
     })
     declare ro_nombre_del_rol: string;
 
-    @HasMany(() => UserRoles)
-    declare user_roles: UserRoles[];
+    //@HasMany(() => UserRoles)
+    //declare user_roles: UserRoles[];
+
+    @HasMany(() => Users)
+    declare users: Users[];
 }
 
 export default Roles;

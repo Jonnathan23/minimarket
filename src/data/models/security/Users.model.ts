@@ -1,7 +1,8 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default, AllowNull, HasMany } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, PrimaryKey, Default, AllowNull, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import UserRoles from './UserRoles.model';
 import Sales from '../sales/Sales.model';
 import CashMovements from '../logistics/CashMovements.model';
+import Roles from './Roles.model';
 
 
 
@@ -93,10 +94,23 @@ export class Users extends Model {
     declare us_estado: boolean;
 
 
+
+    //* |------| | FK | |------|
+    @ForeignKey(() => Roles)
+    @Column({
+        type: DataType.UUID,
+        allowNull: false // Todo usuario DEBE tener un rol
+    })
+    declare us_role_id: string;
+
+
+    @BelongsTo(() => Roles)
+    declare role: Roles;
+
     //* |------| | HasMany | |------|
     // Relación M:M con Roles (a través de UserRoles)
-    @HasMany(() => UserRoles)
-    declare user_roles: UserRoles[];
+    //@HasMany(() => UserRoles)
+    //declare user_roles: UserRoles[];
 
     // Relación 1:N con Sales (Un usuario registra muchas ventas)
     @HasMany(() => Sales)

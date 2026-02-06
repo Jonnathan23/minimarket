@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Users } from "../../../data/models/security";
 import { AppError } from "../../../utils/AppError";
+import Roles from "../../../data/models/security/Roles.model";
 
 declare global {
     namespace Express {
@@ -28,7 +29,7 @@ export const findUserExists = async (req: Request, res: Response, next: NextFunc
 
 export const validateUserExists = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await Users.findOne({ where: { us_username: req.body.us_username } });
+        const user = await Users.findOne({ where: { us_username: req.body.us_username }, include: [Roles] });
         if (!user) {
             throw new AppError('User not found', 404);
         }

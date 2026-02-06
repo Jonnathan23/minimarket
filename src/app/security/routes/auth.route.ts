@@ -22,6 +22,10 @@ authRouter.post('/register',
         .notEmpty().withMessage("All fields are required")
         .isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
 
+    body('us_role_id')
+        .notEmpty().withMessage("Role is required")
+        .isUUID().withMessage("Role must be a UUID"),
+
     handleInputErrors,
     findUserExists,
     AuthController.register
