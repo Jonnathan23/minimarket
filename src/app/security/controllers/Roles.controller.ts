@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import Roles from '../../../data/models/security/Roles.model';
-import { AppError } from '../../../utils/AppError';
 
 export class RolesController {
 
@@ -16,7 +15,7 @@ export class RolesController {
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
             const role = await Roles.create(req.body);
-            res.status(201).json({ data: role });
+            res.status(201).json({ message: 'Role created' });
         } catch (error) {
             next(error);
         }
@@ -26,7 +25,7 @@ export class RolesController {
         try {
             const role = req.role!;
             await role.update(req.body);
-            res.status(200).json(role);
+            res.status(200).json({ message: 'Role updated' });
         } catch (error) {
             next(error);
         }

@@ -3,13 +3,14 @@ import { AuthController } from "..";
 import { findUserExists, validateUserExists } from "../middleware/findUserExists.mid";
 import { handleInputErrors } from "../../../middleware/handleErrors.mid";
 import { body } from "express-validator";
+import { authenticate } from "../../../middleware/validationHeaders";
 
 
 
 export const authRouter = Router();
 
 //? Auth
-authRouter.post('/register',
+authRouter.post('/register', authenticate,
     body('us_username')
         .notEmpty().withMessage("All fields are required")
         .isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
