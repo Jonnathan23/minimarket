@@ -50,4 +50,16 @@ export class AuthController {
         }
     }
 
+    static getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const users = await Users.findAll({
+                attributes: ['us_id', 'us_username', 'us_nombre_completo'],
+                include: [{ model: Roles, attributes: ['ro_nombre_del_rol'] }]
+            });
+
+            res.status(200).json(users);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

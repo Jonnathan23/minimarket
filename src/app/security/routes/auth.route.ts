@@ -32,6 +32,7 @@ authRouter.post('/register', authenticate,
     AuthController.register
 );
 
+authRouter.get('/users', authenticate, AuthController.getAllUsers);
 
 authRouter.post('/login',
     body('us_username')
