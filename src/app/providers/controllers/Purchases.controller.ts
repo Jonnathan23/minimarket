@@ -34,7 +34,7 @@ export class PurchasesController {
                 await PurchaseDetails.bulkCreate(detailsData);
             }
 
-            res.status(201).json(purchase);
+            res.status(201).json({ message: 'Compra creada exitosamente' });
         } catch (error) {
             next(error);
         }

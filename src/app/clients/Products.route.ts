@@ -21,6 +21,9 @@ router.post('/category/:categoryId',
         // RF-03: Validate price > 0
         body('pr_price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
         body('pr_availability').isBoolean().withMessage('Availability must be boolean'),
+        body('pr_stock')
+            .optional({ nullable: true })
+            .isInt({ min: 0 }).withMessage('Stock must be greater than or equal to 0'),
         handleInputErrors
     ],
     ProductsController.create
@@ -34,15 +37,28 @@ router.get('/:productId',
     ProductsController.getById
 );
 
-router.put('/:productId',
+router.put('/:productId/category/:categoryId',
     [
         param('productId').notEmpty().withMessage('Product ID is required'),
+        param('categoryId').notEmpty().withMessage('Category is required'),
+
         body('pr_name').optional().notEmpty(),
         body('pr_price').optional().isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
         body('pr_availability').optional().isBoolean(),
         handleInputErrors
     ],
     ProductsController.update
+);
+
+router.patch('/stock/:productId',
+    [
+        param('productId').notEmpty().withMessage('Product ID is required'),
+        body('pr_stock')
+            .notEmpty().withMessage('Stock is required')
+            .isInt({ min: 0 }).withMessage('Stock must be greater than or equal to 0'),
+        handleInputErrors
+    ],
+    ProductsController.updateStock
 );
 
 router.delete('/:productId',

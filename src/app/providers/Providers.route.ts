@@ -12,7 +12,7 @@ router.param('providerId', providerExists);
 router.use(authenticate);
 
 // POST /provider - Create provider
-router.post('/provider',
+router.post('/',
     [
         body('po_nombre').notEmpty().withMessage('Name is required'),
         body('po_RUC_NIT').notEmpty().withMessage('RUC/NIT is required'),
@@ -32,7 +32,7 @@ router.get('/:providerId',
     ProvidersController.getById
 );
 
-router.put('/:providerId',
+router.patch('/:providerId',
     [
         param('providerId').notEmpty().withMessage('Provider ID is required'),
         body('po_nombre').optional().notEmpty(),

@@ -15,8 +15,8 @@ export class ProvidersController {
 
     static async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const provider = await Providers.create(req.body);
-            res.status(201).json(provider);
+            await Providers.create(req.body);
+            res.status(201).json({ message: 'Provider created successfully' });
         } catch (error) {
             next(error);
         }
@@ -26,7 +26,7 @@ export class ProvidersController {
         try {
             const provider = req.provider!;
             await provider.update(req.body);
-            res.status(200).json(provider);
+            res.status(200).json({ message: 'Provider updated successfully' });
         } catch (error) {
             next(error);
         }
