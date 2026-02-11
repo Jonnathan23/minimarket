@@ -16,23 +16,27 @@ import { authenticate } from '../../middleware/validationHeaders';
 
 router.param('saleId', saleExists);
 router.param('clientId', clientExists);
-router.param('productId', productExists);
+
 
 router.use(authenticate);
 
 // Route: /sale/:clientId/product/:productId
-router.post('/sale/:clientId/product/:productId',
+router.post('/',
     [
-        param('clientId').notEmpty().withMessage('Client ID is required'),
-        param('productId').notEmpty().withMessage('Product ID is required'),
-        // sa_client_id handled by URL
+        body('sa_client_name').notEmpty().withMessage('El nombre del cliente es requerido'),
+        body('sa_client_ci').notEmpty().withMessage('La cédula/RUC del cliente es requerida'),
+
+        // Cabecera (Se mantiene igual)
         body('sa_fecha').isISO8601().toDate().withMessage('Date must be valid ISO8601'),
         body('sa_total').isFloat({ gt: 0 }).withMessage('Total must be greater than 0'),
         body('sa_medio_de_pago').notEmpty().withMessage('Payment method is required'),
+
+        // Detalles (Se mantiene igual)
         body('details').isArray({ min: 1 }).withMessage('Details must be a non-empty array'),
-        // sd_product_id removed from body validation
+        body('details.*.sd_product_id').isUUID().withMessage('Product ID is required for each detail'),
         body('details.*.sd_cantidad').isInt({ gt: 0 }).withMessage('Quantity must be greater than 0'),
         body('details.*.sd_precio_unitario').isFloat({ gt: 0 }).withMessage('Unit price must be greater than 0'),
+
         handleInputErrors
     ],
     SalesController.create

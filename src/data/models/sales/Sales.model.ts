@@ -7,7 +7,9 @@ import { Users } from '../security';
 
 export interface SalesI {
     sa_id?: string;
-    sa_client_id: string | null;
+    sa_client_name: string;
+    sa_client_ci: string;
+    //sa_client_id: string | null;
     sa_user_id: string;
     sa_fecha: Date;
     sa_total: number;
@@ -68,15 +70,27 @@ class Sales extends Model<SalesI> {
     })
     declare sa_id: string;
 
-    @ForeignKey(() => Clients)
     @Column({
-        type: DataType.UUID,
-        allowNull: true // allowNull: true
+        type: DataType.STRING,
+        allowNull: false // Obligamos a que siempre haya un nombre (puede ser "Consumidor Final")
     })
-    declare sa_client_id: string;
+    declare sa_client_name: string;
 
-    @BelongsTo(() => Clients)
-    declare client: Clients;
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    declare sa_client_ci: string;
+
+    //@ForeignKey(() => Clients)
+    //@Column({
+    //    type: DataType.UUID,
+    //    allowNull: true // allowNull: true
+    //})
+    //declare sa_client_id: string;
+
+    //@BelongsTo(() => Clients)
+    //declare client: Clients;
 
     @ForeignKey(() => Users)
     @Column({

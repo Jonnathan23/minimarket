@@ -7,7 +7,15 @@ export class InventoryMovementsController {
 
     static getAll = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const movements = await InventoryMovements.findAll();
+            const movements = await InventoryMovements.findAll({
+                include: [{
+                    model: Products,
+                    as: 'product',
+                    attributes: ['pr_name']
+                }],
+                order: [['im_createdAt', 'DESC'], ['product', 'pr_name', 'ASC']]
+            });
+
             res.status(200).json(movements);
         } catch (error) {
             next(error);
@@ -37,7 +45,7 @@ export class InventoryMovementsController {
                 }
             }
 
-            res.status(201).json(movement);
+            res.status(201).json({ message: 'Movimiento creado exitosamente' });
         } catch (error) {
             next(error);
         }

@@ -92,8 +92,8 @@ class Clients extends Model<ClientsI> {
     })
     declare cl_preferencias_opcionales: string;
 
-    @HasMany(() => Sales)
-    declare sales: Sales[];
+    // @HasMany(() => Sales)
+    // declare sales: Sales[];
 }
 
 export default Clients;

@@ -10,7 +10,7 @@ import { authenticate } from "../../../middleware/validationHeaders";
 export const authRouter = Router();
 
 //? Auth
-authRouter.post('/register', authenticate,
+authRouter.post('/register', //authenticate,
     body('us_username')
         .notEmpty().withMessage("All fields are required")
         .isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
